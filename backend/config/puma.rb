@@ -29,7 +29,7 @@ pidfile ENV.fetch('PIDFILE', 'tmp/pids/server.pid')
 plugin :tmp_restart
 
 ssl_bind(
-  'localhost', 3001,
+  'localhost', 443,
   key: '../certs/cert.key',
   cert: '../certs/cert.crt',
   ca: '../certs/ca.crt',

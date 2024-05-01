@@ -2,12 +2,9 @@
 
 module Api
   class UsersController < ActionController::API
-    skip_before_action :doorkeeper_authorize!, only: %i[show showme], raise: false
+    include NeedsAuth
 
-    # dont import NeedsAuth cuz it will break
-    def current_user
-      @current_user ||= User.find(doorkeeper_token[:resource_owner_id])
-    end
+    skip_before_action :doorkeeper_authorize!, only: %i[register login], raise: false
 
     def register
       user = User.new(user_params)
@@ -29,7 +26,7 @@ module Api
     def login
       user = User.find_by_email(user_params[:email])
 
-      return render(json: { error: 'Invalid email'}, status: 400) unless user
+      return render(json: { error: 'Invalid email' }, status: 400) unless user
       
       return render(json: { error: 'Invalid password' }, status: 400) unless user.valid_password?(params[:password])
 

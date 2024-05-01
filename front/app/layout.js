@@ -9,9 +9,7 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <Theme accentColor="sky">
-          {children}
-        </Theme>
+        {children}
       </body>
     </html>
   );

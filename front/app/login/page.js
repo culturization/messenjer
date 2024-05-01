@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import { setCookie } from 'cookies-next'
 import axios from 'axios';
-import { SignInForm } from 'components/SignInForm.js'
+import { SignInForm } from 'components/SignInForm'
+import { NavBar } from 'components/Navbar'
  
-function LoginForm(email, name, tag, password) {
+export default function Page() {
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const router = useRouter()
@@ -34,14 +35,9 @@ function LoginForm(email, name, tag, password) {
 
   return (
     <>
+      <NavBar />
       <SignInForm handleSubmit={handleSubmit} message={message} isError={isError}/>
       {message && <p>{message}</p>}
     </>
   )
 };
-
-export default function Page() {
-  return (
-    <LoginForm/>
-  )
-}

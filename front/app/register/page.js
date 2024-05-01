@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
 import { RegisterForm } from 'components/RegisterForm';
+import { NavBar } from 'components/Navbar';
  
-function RegistrationForm(email, name, tag, password) {
+export default function Page() {
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const router = useRouter();
@@ -29,12 +30,9 @@ function RegistrationForm(email, name, tag, password) {
   }
 
   return (
-    <RegisterForm handleSubmit={handleSubmit} message={message} isError={isError}/>
+    <>
+      <NavBar />
+      <RegisterForm handleSubmit={handleSubmit} message={message} isError={isError}/>
+    </>
   )
 };
-
-export default function Page() {
-  return (
-    <RegistrationForm/>
-  )
-}

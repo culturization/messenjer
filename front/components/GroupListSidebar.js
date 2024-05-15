@@ -1,34 +1,35 @@
 "use client";
 
-import React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import axios from "axios";
+import scrollToBottom from "lib/scrollToBottom";
 
 export function GroupListSidebar({
   headers,
   groups,
+  currentGroup,
   setGroups,
   setCurrentGroup,
   setMessages,
+  chatBottomRef
 }) {
   groups ||= [];
 
-  async function createNewGroup() {
+  const createNewGroup = async () => {
     await axios
       .post("/api/groups", { name: "АЦЦЦЦКАЯ КОНФА" }, { headers })
       .then(async (res) => {
-        setGroups([...groups, { name: "АЦЦЦЦКАЯ КОНФА", id: res.data.id }]);
+        setGroups([...groups, res.data]);
       })
       .catch((e) => {
         console.log("Не получилось создать группу");
       });
   }
 
-  function handleGroupIconClick(group_id) {
-    console.log("iconclick");
+  const handleGroupIconClick = async (group_id) => {
     setCurrentGroup(group_id);
-    axios
+    await axios
       .get(`/api/groups/${group_id}/messages/latest`, { headers })
       .then((res) => {
         setMessages(res.data);
@@ -36,15 +37,23 @@ export function GroupListSidebar({
   }
 
   return (
-    <div className="block top-0 left-0 w-1/12 h-5/6 bg-discord-dark-gray fixed overflow-auto">
+    <div className="block top-0 left-0 w-1/12 h-5/6 bg-discord-dark-gray fixed overflow-auto hide-scrollbar">
       {groups.map((d) => (
-        <a className="text-white" onClick={() => handleGroupIconClick(d.id)}>
-          <BsFillPeopleFill className="resize w-12 h-12 my-8 ml-auto mr-auto" />
-        </a>
+        <div
+          className={`flex ${
+            currentGroup == d.id
+              ? "bg-discord-black"
+              : "bg-discord-gray hover:bg-discord-dark-gray"
+          } text-white my-4 w-20 h-20 ml-auto mr-auto border border-white border-2 rounded-full items-center justify-center`}
+          onClick={() => handleGroupIconClick(d.id)}
+        >
+          <BsFillPeopleFill className="resize w-12 h-12" />
+        </div>
       ))}
-      <a onClick={createNewGroup}>
-        <BsFillPlusCircleFill className="resize w-12 h-12 mb-8 ml-auto mr-auto" />
-      </a>
+      <BsFillPlusCircleFill
+        className="text-white resize w-12 h-12 mb-8 ml-auto mr-auto"
+        onClick={createNewGroup}
+      />
     </div>
   );
 }

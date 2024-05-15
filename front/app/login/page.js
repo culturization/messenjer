@@ -20,7 +20,6 @@ export default function Page() {
     await axios.post('/api/login', formData, {
       headers: { 'Content-Type': 'application/json' }
     }).then((async res => {
-      console.log(res.data.access_token)
       setCookie('token', `${res.data.token_type} ${res.data.access_token}`, { secure: true });
       setCookie('logged_in', true);
       setMessage('Вы вошли в свой аккаунт!');

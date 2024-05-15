@@ -18,8 +18,6 @@ module Mesenjer
 
     config.action_cable.mount_path = '/cable'
 
-    config.force_ssl = true
-
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
@@ -32,5 +30,7 @@ module Mesenjer
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.middleware.insert_before 0, NextJsProxy
+
+    config.autoloader = :classic
   end
 end

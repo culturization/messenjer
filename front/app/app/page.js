@@ -9,6 +9,8 @@ import { GroupListSidebar } from "components/GroupListSidebar";
 import { ChatWindow } from "components/ChatWindow";
 import { ChatFooter } from "components/ChatFooter";
 
+import scrollToBottom from "lib/scrollToBottom";
+
 export default function Page() {
   async function fetchData() {
     setCurrentUser((await axios.get("/api/users/me", { headers })).data);
@@ -42,8 +44,6 @@ export default function Page() {
   let isAuthorized = getCookie("logged_in");
   let headers = { Authorization: getCookie("token") };
 
-  console.log(isAuthorized);
-
   useEffect(() => {
     if (!isAuthorized) return;
     fetchData();
@@ -52,25 +52,28 @@ export default function Page() {
   if (!isAuthorized) router.push("/login");
 
   return (
-    <div>
+    <div className="flex">
       <GroupListSidebar
         headers={headers}
         groups={groups}
+        currentGroup={currentGroup}
         setGroups={setGroups}
         setCurrentGroup={setCurrentGroup}
         setMessages={setMessages}
       />
 
-      <div>
-        <ChatWindow messages={messages} currentUser={currentUser} />
+      <ChatWindow
+        messages={messages}
+        currentUser={currentUser}
+        currentGroup={currentGroup}
+      />
 
-        <ChatFooter
-          headers={headers}
-          group_id={currentGroup}
-          messages={messages}
-          setMessages={setMessages}
-        />
-      </div>
+      <ChatFooter
+        headers={headers}
+        group_id={currentGroup}
+        messages={messages}
+        setMessages={setMessages}
+      />
     </div>
   );
 }

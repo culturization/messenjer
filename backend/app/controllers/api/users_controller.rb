@@ -44,6 +44,7 @@ module Api
       return render(json: { error: 'Invalid ID' }, status: 400) unless user
 
       render(json: {
+        id: user.id,
         name: user.name,
         tag: user.tag,
         created_at: user.created_at.to_time.to_i,
@@ -54,6 +55,7 @@ module Api
       user = current_user
 
       render(json: {
+        id: user.id,
         name: user.name,
         tag: user.tag,
         created_at: user.created_at.to_time.to_i,
